@@ -179,8 +179,3 @@ username=admin&password=123456
 
 ---
 
-
-
-# 👨‍💻 Author
-
-Developed as a cybersecurity networking and traffic analysis lab project.
