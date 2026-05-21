@@ -1,133 +1,186 @@
-Here is a clean, professional, and well-structured GitHub `README.md` file tailored for your project. It includes clear installation steps, standard repository styling, and places your key learnings front and center.
+# HTTP Credential Sniffing Lab
+
+A hands-on cybersecurity lab demonstrating how insecure HTTP communication exposes sensitive user credentials over a network.
+
+This project uses a vulnerable Node.js login application and Wireshark to capture HTTP packets and extract plaintext usernames and passwords from packet payloads, highlighting the importance of HTTPS encryption.
 
 ---
 
-```markdown
-# HTTP Credential Sniffing Lab
+## 📌 Project Overview
 
-A hands-on cybersecurity lab demonstrating how insecure, unencrypted HTTP communication exposes sensitive user credentials over a local network. 
+When credentials are transmitted over HTTP instead of HTTPS, the data is sent in plaintext. Anyone capable of intercepting the traffic can view sensitive information directly from captured packets.
 
-Using a custom Node.js/Express web application and Wireshark, this project captures network traffic, filters for HTTP POST requests, and extracts plaintext usernames and passwords from packet payloads to illustrate the critical necessity of HTTPS encryption.
+This lab demonstrates:
+
+- Capturing HTTP traffic using Wireshark
+- Filtering login requests
+- Inspecting HTTP POST packets
+- Reconstructing TCP streams
+- Extracting plaintext credentials
 
 ---
 
 ## 🛠️ Technologies Used
 
-*   **Backend:** Node.js, Express.js
-*   **Frontend:** HTML5, CSS3 (Simple Login Form)
-*   **Network Analysis:** Wireshark
+- **Node.js**
+- **Express.js**
+- **HTML/CSS**
+- **Wireshark**
 
 ---
 
 ## 🚀 Features
 
-*   **Vulnerable Login Endpoint:** A simple, intentional HTTP-based form that transmits data without transport-layer security.
-*   **Packet Capture & Inspection:** Practical walkthrough for capturing live local loopback traffic.
-*   **Targeted Traffic Filtering:** Demonstrates the use of specific Wireshark display filters to isolate authentication data.
-*   **TCP Stream Reassembly:** Reconstructs full login sessions to view exact payloads as a malicious actor would see them.
+- Vulnerable HTTP login page
+- Live packet capture using Wireshark
+- HTTP POST request analysis
+- TCP stream reconstruction
+- Plaintext credential extraction
+- Demonstration of insecure network communication
 
 ---
 
-## 🧠 Skills Learned & Verified
+## 🧠 Skills Learned
 
-*   **Network Analysis:** Navigating Wireshark's interface, understanding packet structures, and monitoring live traffic.
-*   **Protocol Inspection:** Analyzing the differences between the application layer (HTTP) and transport layer (TCP).
-*   **Filter Optimization:** Utilizing conditional Wireshark filters to eliminate background network noise.
-*   **Security Literacy:** Understanding the mechanics of credential sniffing attacks and the fundamental math behind unencrypted network risk.
+- Network packet analysis
+- HTTP protocol inspection
+- Wireshark traffic filtering
+- TCP stream analysis
+- Credential sniffing concepts
+- Understanding the importance of HTTPS/TLS
 
 ---
 
 ## 🔄 Project Workflow
 
 ```text
-[ Browser (User Inputs Credentials) ] 
-                 │
-                 ▼
-[ Unencrypted HTTP POST Request over Port 8080 ]
-                 │
-                 ▼
-[ Wireshark Packet Capture (Promiscuous/Loopback Mode) ]
-                 │
-                 ▼
-[ Filter & Inspect Payload ] ──► [ Extract Plaintext Username & Password ]
-
+[ User Enters Credentials ]
+              │
+              ▼
+[ HTTP POST Request Sent ]
+              │
+              ▼
+[ Wireshark Captures Traffic ]
+              │
+              ▼
+[ Apply Filters & Inspect Packets ]
+              │
+              ▼
+[ Extract Plaintext Credentials ]
 ```
 
 ---
 
 ## 🔍 Wireshark Filters Used
 
-To isolate the relevant authentication traffic from background network noise, the following filters were utilized:
-
 | Filter | Purpose |
-| --- | --- |
-| `http` | Isolates all Hypertext Transfer Protocol traffic. |
-| `http.request.method == "POST"` | Filters specifically for data submissions (like login forms). |
-| `tcp.port == 8080` | Limits capture visibility to the custom Node.js application port. |
+|--------|---------|
+| `http` | Show all HTTP traffic |
+| `http.request.method == "POST"` | Show login form submissions |
+| `tcp.port == 8080` | Filter traffic for application port |
 
 ---
 
-## 💻 Getting Started
 
-### Prerequisites
+---
 
-* [Node.js](https://nodejs.org/) (v14 or higher recommended)
-* [Wireshark](https://www.wireshark.org/)
+# ⚙️ Installation & Setup
 
-### Installation & Setup
+## 1️⃣ Clone the Repository
 
-1. **Clone the repository:**
 ```bash
-git clone [https://github.com/your-username/http-credential-sniffing-lab.git](https://github.com/your-username/http-credential-sniffing-lab.git)
+git clone https://github.com/your-username/http-credential-sniffing-lab.git
 cd http-credential-sniffing-lab
-
-
 ```
 
+---
 
+## 2️⃣ Install Dependencies
 
+```bash
+npm install
 ```
 
-2. **Install dependencies:**
-   ```bash
-   npm install
+---
 
-```
+## 3️⃣ Start the Server
 
-3. **Start the vulnerable server:**
 ```bash
 node server.js
-
-
 ```
 
+Server runs on:
 
-
+```text
+http://localhost:8080
 ```
-   *The server should now be running on `http://localhost:8080`.*
-
-### Lab Execution Steps
-
-1. Launch **Wireshark** and select your loopback interface (e.g., `Npcap Loopback Adapter` on Windows or `lo0` on macOS/Linux).
-2. Start the packet capture.
-3. Open your browser, navigate to `http://localhost:8080`, type a test username and password, and click **Login**.
-4. Stop the Wireshark capture and apply the filter: `http.request.method == "POST"`.
-5. Right-click the captured POST packet, select **Follow** -> **TCP Stream**, and locate the plaintext credentials in the request body.
 
 ---
 
-## 💡 Key Takeaway
+# 🧪 Lab Execution Steps
 
-> **Crucial Lesson:** Because standard HTTP traffic transmits data in the clear, any entity positioned along the network path (or sharing an unencrypted local network) can trivially read sensitive information. This lab underscores why modern web applications must strictly enforce **HTTPS (SSL/TLS)** to encrypt data in transit, ensuring confidentiality and data integrity.
+## Step 1 — Start Wireshark
+
+- Open Wireshark
+- Select the loopback adapter:
+  - Windows: `Npcap Loopback Adapter`
+  - Linux/macOS: `lo` or `lo0`
 
 ---
 
-## ⚠️ Disclaimer
+## Step 2 — Start Packet Capture
 
-This project is created strictly for educational and authorized testing purposes. Running packet sniffers on networks without explicit permission from the network owner is illegal and unethical.
+Begin capturing packets before opening the application.
 
+---
+
+## Step 3 — Use the Login Page
+
+Open:
+
+```text
+http://localhost:8080
 ```
 
+Enter:
+- Username
+- Password
+
+Click **Login**.
+
+---
+
+## Step 4 — Filter HTTP POST Requests
+
+Apply this filter in Wireshark:
+
+```text
+http.request.method == "POST"
 ```
 
+---
+
+## Step 5 — Inspect Captured Packets
+
+- Right-click the POST request
+- Select:
+
+```text
+Follow → TCP Stream
 ```
+
+You will see credentials in plaintext.
+
+Example:
+
+```text
+username=admin&password=123456
+```
+
+---
+
+
+
+# 👨‍💻 Author
+
+Developed as a cybersecurity networking and traffic analysis lab project.
